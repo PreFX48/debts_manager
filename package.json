@@ -1,0 +1,29 @@
+{
+  "name": "debts_manager",
+  "version": "0.1.0",
+  "description": "A simple site for managing debts of a group of people",
+  "main": "index.js",
+  "dependencies": {
+    "basic-auth": "^1.0.4",
+    "express": "^4.14.0",
+    "mustache-express": "^1.2.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PreFX48/debts_manager.git"
+  },
+  "keywords": [
+    "debts",
+    "manager"
+  ],
+  "author": "PreFX48",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PreFX48/debts_manager/issues"
+  },
+  "homepage": "https://github.com/PreFX48/debts_manager#readme"
+}

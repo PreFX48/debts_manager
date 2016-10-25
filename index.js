@@ -36,7 +36,7 @@ function respond(req, res, next) {
 //   if (!user || !user.name || !user.pass) {
 //     return unauthorized(res);
 //   };
-//   let users = JSON.parse(fs.readFileSync(__dirname + '/users.json'));
+//   let users = JSON.parse(fs.readFileSync(__dirname + '/logins.json'));
 //   if (users[user.name] === user.pass) {
 //     return next();
 //   } else {
@@ -47,10 +47,12 @@ function respond(req, res, next) {
 function respond(req, res, next) {
     let debts = JSON.parse(fs.readFileSync(__dirname + '/debts.json'));
     let requests = JSON.parse(fs.readFileSync(__dirname + '/requests.json'));
+    let users = JSON.parse(fs.readFileSync(__dirname + '/users.json'));
     res.status(200);
     res.render('index', {
         'debts': debts,
-        'requests': requests
+        'requests': requests,
+        'users': users
     });
 }
 
@@ -64,6 +66,9 @@ app.get('/', function(req, res, next) {
     next();
 });
 app.get('/', respond);
+app.get('/login', function(req, res) {
+    res.status(200).render('login');
+});
 
 app.listen(PORT, function () {
     console.log(`App is listening on ${PORT}`);

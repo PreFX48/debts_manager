@@ -8,8 +8,19 @@
         <div  class="main-line">
             <div class="debts-table">
                 <table>
+                    <tr>
+                        <td></td>
+                        {{#users}}
+                        <td>
+                            {{Dativ}}
+                        </td>
+                        {{/users}}
+                    </tr>
                     {{#debts}}
-                    <tr>{{#.}}<td>{{.}}</td>{{/.}}</tr>
+                    <tr>
+                        <td>{{name}} должен</td>
+                        {{#debts}}<td>{{.}}</td>{{/debts}}
+                    </tr>
                     {{/debts}}
                 </table>
             </div>

@@ -7,6 +7,19 @@ const fs = require('fs');
 
 const PORT = process.env.PORT || 4000;
 
+function zip(...collections) {
+    let result = [];
+    let min_length = Math.min(...(collections.map((collection) => {return collection.length;})));
+    for (let i = 0; i < min_length; ++i) {
+        let element = [];
+        for (let j = 0; j < collections.length; ++j) {
+            element.push(collections[j][i]);
+        }
+        result.push(element);
+    }
+    return result;
+}
+
 function respond(req, res, next) {
     res.send("hi");
 }

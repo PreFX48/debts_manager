@@ -50,7 +50,10 @@ app.get('/', function(req, res, next) {
     console.log("New request: " + req.method + ' ' + req.originalUrl);
     next();
 });
-app.get('/', auth, respond);
+// app.get('/', auth, respond);
+app.get('/', function(req, res) {
+  res.status(200).render('login.html');
+});
 
 app.listen(PORT, function () {
     console.log(`App is listening on ${PORT}`);

@@ -25,7 +25,7 @@
                 </table>
             </div>
             <div class="request-form">
-                <form>
+                <form action="/make_request">
                     <label for="toInput">Кому:</label>
                     <input type="text" id="toInput" name="to">
                     <label for="number">Сколько:</label>
@@ -34,13 +34,21 @@
                 </form>
             </div>
         </div>
-        <div class="requests"
+        <div class="requests">
             <h1>Предложения:</h1>
+            <form action="/handle_request">
             <ul class="requests-list">
-            {{#requests}}
-                <li>От {{from}} к {{to}}: {{transfer}}</li>
-            {{/requests}}
+                    {{#requests}}
+                    <li {{#canHandle}}class='can-handle'{{/canHandle}}>
+                        {{#canHandle}}
+                            <input type='submit' class="request-ok" name="request_ok_{{id}}">
+                            <input type='submit' class="request-reject" name="request_reject_{{id}}">
+                        {{/canHandle}}
+                        От {{from}} к {{to}}: {{transfer}}
+                    </li>
+                    {{/requests}}
             </ul>
+            </form>
         </div>
     </div>
 </body>

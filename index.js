@@ -61,7 +61,7 @@ app.set('view engine', 'html');
 app.set('views', __dirname + '/html');
 
 app.use(express.static(__dirname + '/public'));
-app.get('/', function(req, res, next) {
+app.use(function(req, res, next) {
     console.log("New request: " + req.method + ' ' + req.originalUrl);
     next();
 });

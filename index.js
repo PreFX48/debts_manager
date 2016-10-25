@@ -23,26 +23,26 @@ function zip(...collections) {
 function respond(req, res, next) {
     res.send("hi");
 }
-var basicAuth = require('basic-auth');
-
-var auth = function (req, res, next) {
-  function unauthorized(res) {
-    res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
-    return res.send(401);
-  };
-
-  var user = basicAuth(req);
-
-  if (!user || !user.name || !user.pass) {
-    return unauthorized(res);
-  };
-  let users = JSON.parse(fs.readFileSync(__dirname + '/users.json'));
-  if (users[user.name] === user.pass) {
-    return next();
-  } else {
-    return unauthorized(res);
-  };
-};
+// var basicAuth = require('basic-auth');
+//
+// var auth = function (req, res, next) {
+//   function unauthorized(res) {
+//     res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
+//     return res.send(401);
+//   };
+//
+//   var user = basicAuth(req);
+//
+//   if (!user || !user.name || !user.pass) {
+//     return unauthorized(res);
+//   };
+//   let users = JSON.parse(fs.readFileSync(__dirname + '/users.json'));
+//   if (users[user.name] === user.pass) {
+//     return next();
+//   } else {
+//     return unauthorized(res);
+//   };
+// };
 
 function respond(req, res, next) {
     let debts = JSON.parse(fs.readFileSync(__dirname + '/debts.json'));
@@ -63,10 +63,7 @@ app.get('/', function(req, res, next) {
     console.log("New request: " + req.method + ' ' + req.originalUrl);
     next();
 });
-// app.get('/', auth, respond);
-app.get('/', function(req, res) {
-  res.status(200).render('login.html');
-});
+app.get('/', respond);
 
 app.listen(PORT, function () {
     console.log(`App is listening on ${PORT}`);

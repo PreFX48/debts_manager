@@ -3,16 +3,34 @@
     <title>Debts</title>
 </head>
 <body>
-    <link rel='stylesheet' href='index.css'>
-    <h1>An elegant service to check how much money we need to pay to Nikita</h1>
-    <table>
-        {{#debts}}
-        <tr>{{#.}}<td>{{.}}</td>{{/.}}</tr>
-        {{/debts}}
-    </table>
-    <h1>Requests:</h1>
-    {{#requests}}
-        <p>From {{from}} to {{to}}: {{newValue}}</p>
-    {{/requests}}
+    <div class='main'>
+        <link rel='stylesheet' href='index.css'>
+        <div  class="main-line">
+            <div class="debts-table">
+                <table>
+                    {{#debts}}
+                    <tr>{{#.}}<td>{{.}}</td>{{/.}}</tr>
+                    {{/debts}}
+                </table>
+            </div>
+            <div class="request-form">
+                <form>
+                    <label for="toInput">Кому:</label>
+                    <input type="text" id="toInput" name="to">
+                    <label for="number">Сколько:</label>
+                    <input type="text" id="moneyInput" name="money" min="1" max="9999">
+                    <input type="submit" value="Предложить">
+                </form>
+            </div>
+        </div>
+        <div class="requests"
+            <h1>Предложения:</h1>
+            <ul class="requests-list">
+            {{#requests}}
+                <li>От {{from}} к {{to}}: {{transfer}}</li>
+            {{/requests}}
+            </ul>
+        </div>
+    </div>
 </body>
 </html>

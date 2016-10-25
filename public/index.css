@@ -1,10 +1,101 @@
-table {
+body {
+    background-color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.main {
+    background-color: opaque;
+    width: calc(80%);
+    margin: 0 50px;
+    padding: 10px;
+    font-family: Helvetica;
+}
+
+.main-line {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.main-line table {
     border-collapse: collapse;
+    margin: 50px;
 }
 td {
-    border: 1px solid black;
+    border: 1px solid #ccc;
     font-size: 25px;
+    padding: 5px;
+    background-color: white;
+}
+tr:nth-of-type(2n) > td:nth-of-type(2n) {
+    background-color: #eee;
+}
+tr:nth-of-type(2n-1) > td:nth-of-type(2n-1) {
+    background-color: #eee;
 }
 p {
     font-size: 25px;
+}
+
+.request-form {
+    background-color: #FCFCFC;
+    border-radius: 5px;
+    border: 2px solid #E7E7E7;
+    vertical-align: middle;
+    width: 300px;
+    margin: 100px 50px;
+    padding: 10px;
+}
+.request-form label {
+  display: table;
+  margin: 5px auto;
+  font-size: 26px;
+  font-family: Helvetica;
+  color: #555;
+}
+
+.request-form input {
+  display: block;
+  margin: 10px auto;
+}
+
+.request-form input[type="text"] {
+  border-radius: 2px;
+  box-shadow: 0;
+  border: 2px solid #E7E7E7;
+  height: 40px;
+  background-color: white;
+  font-size: 20px;
+  width: 200px;
+  font-family: Helvetica;
+  padding-left: 10px;
+}
+
+.request-form input[type="submit"] {
+  box-shadow: 0;
+  border-radius: 2px;
+  border: 0;
+  height: 40px;
+  background-color: #0080FF;
+  font-size: 20px;
+  width: 150px;
+  height: 50px;
+  color: white;
+  font-family: Helvetica;
+}
+
+.requests-list {
+    list-style: none;
+    display: table;
+}
+.requests-list > li {
+    border: 1px solid #CCCCCC;
+    background-color: white;
+    font-size: 24px;
+    font-family: Helvetica;
+    padding: 5px;
+}
+.requests-list > li:nth-of-type(2n-1) {
+    background-color: #EEEEEE;
 }

@@ -1,55 +1,55 @@
 <html>
 <head>
-    <title>Debts</title>
+  <title>Debts</title>
 </head>
 <body>
-    <div class='main'>
-        <link rel='stylesheet' href='index.css'>
-        <div  class="main-line">
-            <div class="debts-table">
-                <table>
-                    <tr>
-                        <td></td>
-                        {{#users}}
-                        <td>
-                            {{Dativ}}
-                        </td>
-                        {{/users}}
-                    </tr>
-                    {{#debts}}
-                    <tr>
-                        <td>{{name}} должен</td>
-                        {{#debts}}<td>{{.}}</td>{{/debts}}
-                    </tr>
-                    {{/debts}}
-                </table>
-            </div>
-            <div class="request-form">
-                <form action="/make_request">
-                    <label for="toInput">Кому:</label>
-                    <input type="text" id="toInput" name="to">
-                    <label for="number">Сколько:</label>
-                    <input type="text" id="moneyInput" name="money" min="1" max="9999">
-                    <input type="submit" value="Предложить">
-                </form>
-            </div>
-        </div>
-        <div class="requests">
-            <h1>Предложения:</h1>
-            <form action="/handle_request">
-            <ul class="requests-list">
-                    {{#requests}}
-                    <li {{#canHandle}}class='can-handle'{{/canHandle}}>
-                        {{#canHandle}}
-                            <input type='submit' class="request-ok" name="request_ok_{{id}}">
-                            <input type='submit' class="request-reject" name="request_reject_{{id}}">
-                        {{/canHandle}}
-                        От {{from}} к {{to}}: {{transfer}}
-                    </li>
-                    {{/requests}}
-            </ul>
-            </form>
-        </div>
+  <div class='main'>
+    <link rel='stylesheet' href='index.css'>
+    <div  class="main-line">
+      <div class="debts-table">
+        <table>
+          <tr>
+            <td></td>
+            {{#users}}
+            <td>
+              {{Dativ}}
+            </td>
+            {{/users}}
+          </tr>
+          {{#debts}}
+          <tr>
+            <td>{{name}} должен</td>
+            {{#debts}}<td>{{.}}</td>{{/debts}}
+          </tr>
+          {{/debts}}
+        </table>
+      </div>
+      <div class="request-form">
+        <form action="/make_request">
+          <label for="toInput">Кому:</label>
+          <input type="text" id="toInput" name="to">
+          <label for="number">Сколько:</label>
+          <input type="text" id="moneyInput" name="money" min="1" max="9999">
+          <input type="submit" value="Предложить">
+        </form>
+      </div>
     </div>
+    <div class="requests">
+      <h1>Предложения:</h1>
+      <form action="/handle_request">
+        <ul class="requests-list">
+          {{#requests}}
+          <li {{#canHandle}}class='can-handle'{{/canHandle}}>
+            {{#canHandle}}
+            <input type='submit' class="request-ok" name="request_ok_{{id}}">
+            <input type='submit' class="request-reject" name="request_reject_{{id}}">
+            {{/canHandle}}
+            От {{from}} к {{to}}: {{transfer}}
+          </li>
+          {{/requests}}
+        </ul>
+      </form>
+    </div>
+  </div>
 </body>
 </html>

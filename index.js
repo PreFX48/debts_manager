@@ -58,6 +58,22 @@ function respondMainPage(req, res, next) {
     });
 }
 
+function postRequest(req, res, next) {
+    let requests = JSON.parse(fs.readFileSync(__dirname + '/requests.json'));
+    let newElement = {id: 0,
+                      from: req.session.user,
+                      to: req.body.to,
+                      transfer: req.body.money};
+    if (requests.length === 0) {
+        requests.push(newElement);
+    } else {
+        newElement.id = requests[0].id + 1;
+        requests.unshift(newElement);
+    }
+    fs.writeFileSync(__dirname + '/requests.json', JSON.stringify(requests));
+    res.redirect('/');
+}
+
 
 app.engine('html', mustacheExpress());
 app.set('view engine', 'html');
@@ -77,6 +93,7 @@ app.use(cookieSession({
 app.get('/', respondMainPage);
 app.get('/login', respondLoginPage);
 app.post('/login', postLogin);
+app.post('/make_request', postRequest);
 
 app.listen(PORT, function () {
     console.log(`App is listening on ${PORT}`);

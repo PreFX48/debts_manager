@@ -48,8 +48,13 @@ function respondMainPage(req, res, next) {
         return;
     }
     let debts = JSON.parse(fs.readFileSync(__dirname + '/debts.json'));
-    let requests = JSON.parse(fs.readFileSync(__dirname + '/requests.json'));
     let users = JSON.parse(fs.readFileSync(__dirname + '/users.json'));
+    let requests = JSON.parse(fs.readFileSync(__dirname + '/requests.json'));
+    for (var request of requests) {
+        if (request.to === req.session.user) {
+            request.canHandle = true;
+        }
+    }
     res.status(200);
     res.render('index', {
         'debts': debts,

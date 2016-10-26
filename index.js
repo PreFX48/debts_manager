@@ -93,6 +93,12 @@ function handleRequest(req, res, next) {
         if (id === requests[i].id) {
             if (requests[i].to === req.session.user) {
                 if (ok) {
+                    let ids = req.app.locals.usersIds;
+                    let debts = JSON.parse(fs.readFileSync(__dirname + '/debts.json'));
+                    debts[ids[requests[i].from]].debts[ids[requests[i].to]] -= parseInt(requests[i].transfer);
+                    debts[ids[requests[i].to]].debts[ids[requests[i].from]] += parseInt(requests[i].transfer);
+                    fs.writeFileSync(__dirname + '/debts.json',
+                                     JSON.stringify(debts));
                     requests[i].accepted = true;
                     delete requests[i].canHandle;
                 } else {
@@ -131,6 +137,14 @@ app.get('/login', respondLoginPage);
 app.post('/login', postLogin);
 app.post('/make_request', postRequest);
 app.post('/handle_request', handleRequest);
+
+(function() {
+    let usersList = JSON.parse(fs.readFileSync(__dirname + '/users.json'));
+    app.locals.usersIds = {};
+    for (let i = 0; i < usersList.length; ++i) {
+        app.locals.usersIds[usersList[i].Nominativ] = i;
+    }
+})();
 
 app.listen(PORT, function () {
     console.log(`App is listening on ${PORT}`);

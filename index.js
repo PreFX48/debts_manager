@@ -4,6 +4,8 @@ const express = require('express');
 const app = express();
 const mustacheExpress = require('mustache-express');
 const fs = require('fs');
+const cookieSession = require('cookie-session');
+const bodyParser = require('body-parser');
 
 const PORT = process.env.PORT || 4000;
 
@@ -20,31 +22,31 @@ function zip(...collections) {
     return result;
 }
 
-function respond(req, res, next) {
-    res.send("hi");
+function respondLoginPage(req, res, next) {
+    if (req.session && req.session.authorized) {
+        res.redirect('/');
+    } else {
+        req.session = null;
+        res.status(200).render('login');
+    }
 }
-// var basicAuth = require('basic-auth');
-//
-// var auth = function (req, res, next) {
-//   function unauthorized(res) {
-//     res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
-//     return res.send(401);
-//   };
-//
-//   var user = basicAuth(req);
-//
-//   if (!user || !user.name || !user.pass) {
-//     return unauthorized(res);
-//   };
-//   let users = JSON.parse(fs.readFileSync(__dirname + '/logins.json'));
-//   if (users[user.name] === user.pass) {
-//     return next();
-//   } else {
-//     return unauthorized(res);
-//   };
-// };
+function handleLogin(req, res, next) {
+    let logins = JSON.parse(fs.readFileSync(__dirname + '/logins.json'));
+    if (logins[req.body.login] === req.body.password) {
+        req.session.authorized = true;
+        req.session.user = req.body.login;
+        res.redirect('/');
+    } else {
+        req.session = null;
+        res.status(403).send();
+    }
+}
 
-function respond(req, res, next) {
+function respondMainPage(req, res, next) {
+    if (!req.session || !req.session.authorized) {
+        res.redirect('/login');
+        return;
+    }
     let debts = JSON.parse(fs.readFileSync(__dirname + '/debts.json'));
     let requests = JSON.parse(fs.readFileSync(__dirname + '/requests.json'));
     let users = JSON.parse(fs.readFileSync(__dirname + '/users.json'));
@@ -56,6 +58,7 @@ function respond(req, res, next) {
     });
 }
 
+
 app.engine('html', mustacheExpress());
 app.set('view engine', 'html');
 app.set('views', __dirname + '/html');
@@ -65,10 +68,15 @@ app.use(function(req, res, next) {
     console.log("New request: " + req.method + ' ' + req.originalUrl);
     next();
 });
-app.get('/', respond);
-app.get('/login', function(req, res) {
-    res.status(200).render('login');
-});
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true}));
+app.use(cookieSession({
+    name: 'session',
+    secret: 'Wow such phrase so secret'
+}));
+app.get('/', respondMainPage);
+app.get('/login', respondLoginPage);
+app.post('/login', handleLogin);
 
 app.listen(PORT, function () {
     console.log(`App is listening on ${PORT}`);

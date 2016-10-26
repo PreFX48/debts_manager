@@ -103,6 +103,10 @@ tr:nth-of-type(2n-1) > td:nth-of-type(2n-1) {
 .requests-list li:nth-of-type(2n-1) {
     background-color: #EEEEEE;
 }
+ul.requests-list li.accepted {
+    background-color: #71CA6B;
+    border-color: #325B2F;
+}
 .can-handle {
     box-shadow: inset 0 0 2px  1px yellow;
 }

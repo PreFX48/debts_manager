@@ -51,7 +51,7 @@ function respondMainPage(req, res, next) {
     let users = JSON.parse(fs.readFileSync(__dirname + '/users.json'));
     let requests = JSON.parse(fs.readFileSync(__dirname + '/requests.json'));
     for (var request of requests) {
-        if (request.to === req.session.user) {
+        if (request.to === req.session.user && !request.accepted) {
             request.canHandle = true;
         }
     }
@@ -79,6 +79,37 @@ function postRequest(req, res, next) {
     res.redirect('/');
 }
 
+function handleRequest(req, res, next) {
+    let requests = JSON.parse(fs.readFileSync(__dirname + '/requests.json'));
+    let ok, id;
+    if (req.body.request_ok !== undefined) {
+        ok = true;
+        id = parseInt(req.body.request_ok);
+    } else {
+        ok = false;
+        id = parseInt(req.body.request_reject);
+    }
+    for (var i = 0; i < requests.length; ++i) {
+        if (id === requests[i].id) {
+            if (requests[i].to === req.session.user) {
+                if (ok) {
+                    requests[i].accepted = true;
+                    delete requests[i].canHandle;
+                } else {
+                    requests.splice(i, 1);
+                }
+                fs.writeFileSync(__dirname + '/requests.json',
+                                 JSON.stringify(requests));
+                res.redirect('/');
+            } else {
+                res.status(403).send();
+            }
+            return;
+        }
+    }
+    res.status(403).send();
+}
+
 
 app.engine('html', mustacheExpress());
 app.set('view engine', 'html');
@@ -99,6 +130,7 @@ app.get('/', respondMainPage);
 app.get('/login', respondLoginPage);
 app.post('/login', postLogin);
 app.post('/make_request', postRequest);
+app.post('/handle_request', handleRequest);
 
 app.listen(PORT, function () {
     console.log(`App is listening on ${PORT}`);

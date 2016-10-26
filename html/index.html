@@ -36,13 +36,14 @@
     </div>
     <div class="requests">
       <h1>Предложения:</h1>
-      <form action="/handle_request">
+      <form action="/handle_request" method="POST">
         <ul class="requests-list">
           {{#requests}}
-          <li {{#canHandle}}class='can-handle'{{/canHandle}}>
+          <li {{#canHandle}}class='can-handle'{{/canHandle}}
+              {{#accepted}} class='accepted'{{/accepted}}>
             {{#canHandle}}
-            <input type='submit' class="request-ok" name="request_ok_{{id}}">
-            <input type='submit' class="request-reject" name="request_reject_{{id}}">
+            <input type='submit' class="request-ok" name="request_ok" value="{{id}}">
+            <input type='submit' class="request-reject" name="request_reject" value="{{id}}">
             {{/canHandle}}
             От {{from}} к {{to}}: {{transfer}}
           </li>

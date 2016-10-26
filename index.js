@@ -30,7 +30,7 @@ function respondLoginPage(req, res, next) {
         res.status(200).render('login');
     }
 }
-function handleLogin(req, res, next) {
+function postLogin(req, res, next) {
     let logins = JSON.parse(fs.readFileSync(__dirname + '/logins.json'));
     if (logins[req.body.login] === req.body.password) {
         req.session.authorized = true;
@@ -76,7 +76,7 @@ app.use(cookieSession({
 }));
 app.get('/', respondMainPage);
 app.get('/login', respondLoginPage);
-app.post('/login', handleLogin);
+app.post('/login', postLogin);
 
 app.listen(PORT, function () {
     console.log(`App is listening on ${PORT}`);

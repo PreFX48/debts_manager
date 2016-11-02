@@ -6,6 +6,7 @@ const mustacheExpress = require('mustache-express');
 const fs = require('fs');
 const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
+const validator = require('validator');
 
 const PORT = process.env.PORT || 4000;
 
@@ -64,6 +65,10 @@ function respondMainPage(req, res, next) {
 }
 
 function postRequest(req, res, next) {
+    if (!validator.isInt(''+req.body.money, {min: 1})) {
+        res.status(400).send();
+        return;
+    }
     let requests = JSON.parse(fs.readFileSync(__dirname + '/requests.json'));
     let newElement = {id: 0,
                       from: req.session.user,

@@ -3,26 +3,16 @@
   <title>Debts</title>
 </head>
 <body>
-  <div class="header">
-    <a href='/?mobile=true'>Мобильная версия</a>
-  </div>
   <div class='main'>
     <link rel='stylesheet' href='index.css'>
     <div  class="main-line">
       <div class="debts-table">
         <table>
-          <tr>
-            <td></td>
-            {{#users}}
-            <td>
-              {{Dativ}}
-            </td>
-            {{/users}}
-          </tr>
+          <caption>Вам должны:</caption>
           {{#debts}}
           <tr>
-            <td>{{name}} должен</td>
-            {{#debts}}<td>{{.}}</td>{{/debts}}
+            <td>{{name}}</td>
+            <td>{{debt}}</td>
           </tr>
           {{/debts}}
         </table>
@@ -54,6 +44,9 @@
         </ul>
       </form>
     </div>
+  </div>
+  <div class="footer">
+    <a href='?mobile=false'>Полная версия</a>
   </div>
 </body>
 </html>

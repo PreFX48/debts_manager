@@ -7,6 +7,7 @@ const fs = require('fs');
 const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 const validator = require('validator');
+const cookieParser = require('cookie-parser');
 
 const PORT = process.env.PORT || 4000;
 
@@ -48,6 +49,14 @@ function respondMainPage(req, res, next) {
         res.redirect('/login');
         return;
     }
+    if (req.query.mobile === 'true') {
+        res.cookie('mobile', 'true');
+        res.redirect('/');
+    } else if (req.query.mobile === 'false') {
+        res.cookie('mobile', 'false');
+        res.redirect('/');
+    }
+
     let debts = JSON.parse(fs.readFileSync(__dirname + '/debts.json'));
     let users = JSON.parse(fs.readFileSync(__dirname + '/users.json'));
     let requests = JSON.parse(fs.readFileSync(__dirname + '/requests.json'));
@@ -57,11 +66,23 @@ function respondMainPage(req, res, next) {
         }
     }
     res.status(200);
-    res.render('index', {
-        'debts': debts,
-        'requests': requests,
-        'users': users
-    });
+
+    if (req.cookies.mobile && req.cookies.mobile === 'true') {
+        debts = debts.map(user => {return { 'name': user.name,
+                                            'debt': user.debts[req.app.locals.usersIds[req.session.user]]
+                                          };
+                                  });
+        res.render('mobile', {
+            'debts': debts,
+            'requests': requests
+        });
+    } else {
+        res.render('index', {
+            'debts': debts,
+            'requests': requests,
+            'users': users
+        });
+    }
 }
 
 function postRequest(req, res, next) {
@@ -135,8 +156,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(cookieSession({
     name: 'session',
-    secret: 'Wow such phrase so secret'
+    secret: 'Wow such phrase so secret',
+    maxAge: 1000*60*60*24*30 // 30 days
 }));
+app.use(cookieParser());
+
 app.get('/', respondMainPage);
 app.get('/login', respondLoginPage);
 app.post('/login', postLogin);

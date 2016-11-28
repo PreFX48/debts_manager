@@ -72,6 +72,7 @@ function respondMainPage(req, res, next) {
                                             'debt': user.debts[req.app.locals.usersIds[req.session.user]]
                                           };
                                   });
+        debts.splice(req.app.locals.usersIds[req.session.user], 1);
         res.render('mobile', {
             'debts': debts,
             'requests': requests

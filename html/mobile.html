@@ -1,31 +1,26 @@
 <html>
 <head>
   <title>Debts</title>
+  <link rel='stylesheet' href='mobile.css'>
 </head>
 <body>
   <div class='main'>
-    <link rel='stylesheet' href='index.css'>
-    <div  class="main-line">
-      <div class="debts-table">
-        <table>
-          <caption>Вам должны:</caption>
-          {{#debts}}
-          <tr>
-            <td>{{name}}</td>
-            <td>{{debt}}</td>
-          </tr>
-          {{/debts}}
-        </table>
-      </div>
-      <div class="request-form">
-        <form action="/make_request" method="POST">
-          <label for="toInput">Кому:</label>
-          <input type="text" id="toInput" name="to">
-          <label for="number">Сколько:</label>
-          <input type="text" id="moneyInput" name="money" min="1" max="9999">
-          <input type="submit" value="Предложить">
-        </form>
-      </div>
+    <div class="debts-table">
+        <h1>Вам должны:</h1>
+        {{#debts}}
+        <div class='debt-cell'>
+          {{name}}: {{debt}}
+        </div>
+        {{/debts}}
+    </div>
+    <div class="request-form">
+    <form action="/make_request" method="POST">
+      <label for="toInput">Кому:</label>
+      <input type="text" id="toInput" name="to">
+      <label for="number">Сколько:</label>
+      <input type="text" id="moneyInput" name="money" min="1" max="9999">
+      <input type="submit" value="Предложить">
+    </form>
     </div>
     <div class="requests">
       <h1>Предложения:</h1>

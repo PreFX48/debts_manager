@@ -30,10 +30,12 @@
           <li {{#canHandle}}class='can-handle'{{/canHandle}}
               {{#accepted}} class='accepted'{{/accepted}}>
             {{#canHandle}}
-            <input type='submit' class="request-ok" name="request_ok" value="{{id}}">
-            <input type='submit' class="request-reject" name="request_reject" value="{{id}}">
+            <div class='request-item'>От {{from}} к {{to}}: {{transfer}}</div>
+            <div class='choice-buttons'>
+              <input type='submit' class="request-ok" name="request_ok" value="{{id}}">
+              <input type='submit' class="request-reject" name="request_reject" value="{{id}}">
+            </div class='choice-buttons'>
             {{/canHandle}}
-            От {{from}} к {{to}}: {{transfer}}
           </li>
           {{/requests}}
         </ul>
@@ -42,6 +44,8 @@
   </div>
   <div class="footer">
     <a href='?mobile=false'>Полная версия</a>
+    <a href='/settings'>Настройки</a>
+    <a href='/logout'>Выйти</a>
   </div>
 </body>
 </html>

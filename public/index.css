@@ -4,6 +4,36 @@ body {
     padding: 0;
 }
 
+a {
+    display: inline-block;
+    margin-right: 10px;
+    font-family: Helvetica;
+    font-size: 20px;
+    text-decoration: none;
+    color: #505050;
+    padding: 5px;
+    transition: color 0.5s;
+    position: relative;
+}
+a::before {
+    content: "";
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #555;
+}
+a:hover {
+    color: #333;
+    background-color: #EEE;
+}
+a:hover::before {
+    width: 100%;
+    transition: width 0.5s;
+}
+
+
 .main {
     background-color: opaque;
     width: calc(80%);

@@ -4,6 +4,16 @@ body {
     padding: 0;
 }
 
+.footer a {
+    display: block;
+    font-family: Helvetica;
+    text-decoration: none;
+    color: #333;
+    position: relative;
+    width: 45%;
+    margin: auto;
+}
+
 .main {
     background-color: opaque;
     width: 100%;
@@ -69,23 +79,26 @@ h1 {
     margin: 0;
     padding: 0;
 }
-.requests-list li {
+.requests-list li .request-item {
     border: solid #CCCCCC;
     background-color: white;
     font-family: Helvetica;
     margin: 0;
+    height: auto;
     position: relative;
+    text-align: center;
 }
-.requests-list li:nth-of-type(2n-1) {
+.requests-list li:nth-of-type(2n-1) .request-item {
     background-color: #EEEEEE;
 }
-ul.requests-list li.accepted {
+ul.requests-list li.accepted .request-item {
     background-color: #71CA6B;
     border-color: #325B2F;
 }
 .requests-list li input[type='submit'] {
-    position: absolute;
     width: 30%;
+    display: inline-block;
+    position: relative;
     border: 0;
     box-shadow: 0;
     padding: 0;
@@ -93,14 +106,19 @@ ul.requests-list li.accepted {
     font-size: 0;
     transition: transform 0.5s;
 }
+.requests-list li .choice-buttons {
+    margin: auto;
+    padding: 0;
+    font-size: 0;
+    position: relative;
+    left: 20%;
+}
 
 .requests-list li input[type='submit'].request-ok {
-    left: 20%;
     background-color: #55AB55;
     border-top: solid #2e5d2e;
 }
 .requests-list li input[type='submit'].request-reject {
-    left: 50%;
     background-color: #E94E1B;
     border-top: solid #832c10;
 }
@@ -113,6 +131,11 @@ a {
 @media only screen and (max-width: 360px) {
     h1 {
         font-size: 36px;
+    }
+    .footer a {
+        font-size: 20px;
+        padding: 10px;
+        margin-bottom: 3px;
     }
     .debt-cell {
         margin: 10px auto;
@@ -151,18 +174,18 @@ a {
         padding-top: 10px;
     }
     .requests-list li {
+        margin-bottom: 5px;
+    }
+    .requests-list li .request-item {
         border-width: 1px;
         font-size: 24px;
         padding: 5px;
-        margin-bottom: 5px;
-        position: relative;
     }
-    .requests-list li.can-handle {
+    .requests-list li.can-handle .request-item {
         box-shadow: inset 0 0 2px  1px yellow;
-        margin-bottom: 50px;
     }
     .requests-list li input[type='submit'] {
-        top: 45px;
+        box-sizing: padding-box;
         height: 40px;
         box-shadow: 0 1px 1px black;
     }
@@ -176,9 +199,14 @@ a {
     }
 }
 
-@media only screen and (min-width: 360px) and (max-width: 540px) {
+@media only screen and (min-width: 361px) and (max-width: 540px) {
     h1 {
         font-size: 40px;
+    }
+    .footer a {
+        font-size: 25px;
+        padding: 15px;
+        margin-bottom: 5px;
     }
     .debt-cell {
         margin: 15px auto;
@@ -220,18 +248,17 @@ a {
         padding-top: 15px;
     }
     .requests-list li {
+        margin-bottom: 7px;
+    }
+    .requests-list li .request-item {
         border-width: 2px;
         font-size: 30px;
         padding: 7px;
-        margin-bottom: 7px;
-        position: relative;
     }
-    .requests-list li.can-handle {
+    .requests-list li.can-handle .request-item {
         box-shadow: inset 0 0 3px  2px yellow;
-        margin-bottom: 70px;
     }
     .requests-list li input[type='submit'] {
-        top: 60px;
         height: 60px;
         box-shadow: 0 2px 2px black;
     }
@@ -245,9 +272,14 @@ a {
     }
 }
 
-@media only screen and (min-width: 540px) and (max-width: 750px) {
+@media only screen and (min-width: 541px) and (max-width: 750px) {
     h1 {
         font-size: 45px;
+    }
+    .footer a {
+        font-size: 30px;
+        padding: 20px;
+        margin-bottom: 7px;
     }
     .debt-cell {
         margin: 20px auto;
@@ -289,18 +321,17 @@ a {
         padding-top: 20px;
     }
     .requests-list li {
+        margin-bottom: 10px;
+    }
+    .requests-list li .request-item {
         border-width: 3px;
         font-size: 40px;
         padding: 10px;
-        margin-bottom: 10px;
-        position: relative;
     }
-    .requests-list li.can-handle {
+    .requests-list li.can-handle .request-item {
         box-shadow: inset 0 0 5px  3px yellow;
-        margin-bottom: 90px;
     }
     .requests-list li input[type='submit'] {
-        top: 80px;
         height: 80px;
         box-shadow: 0 3px 3px black;
     }
@@ -313,9 +344,14 @@ a {
         border-radius: 0 0 20px 0;
     }
 }
-@media only screen and (min-width: 750px) {
+@media only screen and (min-width: 751px) {
     h1 {
         font-size: 60px;
+    }
+    .footer a {
+        font-size: 48px;
+        padding: 40px;
+        margin-bottom: 10px;
     }
     .debt-cell {
         margin: 30px auto;
@@ -357,18 +393,17 @@ a {
         padding-top: 30px;
     }
     .requests-list li {
+        margin-bottom: 15px;
+    }
+    .requests-list li .request-item {
         border-width: 5px;
         font-size: 60px;
         padding: 15px;
-        margin-bottom: 15px;
-        position: relative;
     }
-    .requests-list li.can-handle {
+    .requests-list li.can-handle .request-item {
         box-shadow: inset 0 0 7px  4px yellow;
-        margin-bottom: 120px;
     }
     .requests-list li input[type='submit'] {
-        top: 110px;
         height: 110px;
         box-shadow: 0 4px 4px black;
     }

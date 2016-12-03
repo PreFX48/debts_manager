@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 const validator = require('validator');
 const cookieParser = require('cookie-parser');
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 80;
 
 function zip(...collections) {
     let result = [];
@@ -41,6 +41,22 @@ function postLogin(req, res, next) {
     } else {
         req.session = null;
         res.status(403).send();
+    }
+}
+function respondSettingsPage(req, res, next) {
+    if (!req.session || !req.session.authorized) {
+        res.redirect('/login');
+        return;
+    }
+    res.status(200).render('settings');
+}
+
+function updateSettings(req, res, next) {
+    if (req.session.user) {
+        let logins = JSON.parse(fs.readFileSync(__dirname + '/logins.json'));
+        logins[req.session.user] = req.body.newPassword;
+        fs.writeFileSync(__dirname + '/logins.json', JSON.stringify(logins));
+        res.redirect('/');
     }
 }
 
@@ -143,6 +159,11 @@ function handleRequest(req, res, next) {
     res.status(403).send();
 }
 
+function logout(req, res, next) {
+    req.session = null;
+    res.redirect('/login');
+}
+
 
 app.engine('html', mustacheExpress());
 app.set('view engine', 'html');
@@ -164,9 +185,12 @@ app.use(cookieParser());
 
 app.get('/', respondMainPage);
 app.get('/login', respondLoginPage);
+app.get('/settings', respondSettingsPage);
+app.get('/logout', logout);
 app.post('/login', postLogin);
 app.post('/make_request', postRequest);
 app.post('/handle_request', handleRequest);
+app.post('/update_settings', updateSettings);
 
 (function() {
     let usersList = JSON.parse(fs.readFileSync(__dirname + '/users.json'));

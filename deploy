@@ -1,0 +1,10 @@
+#!/bin/bash
+ssh root@prefx48.me "screen -S nodejs -X kill"
+
+scp index.js root@prefx48.me:/home/prefx/proj/
+scp package.json root@prefx48.me:/home/prefx/proj/
+scp -r public root@prefx48.me:/home/prefx/proj/
+scp -r html root@prefx48.me:/home/prefx/proj/
+
+ssh root@prefx48.me "cd /home/prefx/proj; npm install"
+ssh root@prefx48.me "screen -dmS nodejs node /home/prefx/proj/index.js"

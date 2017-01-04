@@ -4,6 +4,15 @@ body {
     padding: 0;
 }
 
+.email-warning {
+    display: block;
+    font-family: Helvetica;
+    color: #eb4444;
+    background-color: rgba(245, 229, 122, 0.5);
+    position: relative;
+    text-align: center;
+}
+
 .footer a {
     display: block;
     font-family: Helvetica;
@@ -91,37 +100,6 @@ h1 {
 .requests-list li:nth-of-type(2n-1) .request-item {
     background-color: #EEEEEE;
 }
-ul.requests-list li.accepted .request-item {
-    background-color: #71CA6B;
-    border-color: #325B2F;
-}
-.requests-list li input[type='submit'] {
-    width: 30%;
-    display: inline-block;
-    position: relative;
-    border: 0;
-    box-shadow: 0;
-    padding: 0;
-    margin: 0;
-    font-size: 0;
-    transition: transform 0.5s;
-}
-.requests-list li .choice-buttons {
-    margin: auto;
-    padding: 0;
-    font-size: 0;
-    position: relative;
-    left: 20%;
-}
-
-.requests-list li input[type='submit'].request-ok {
-    background-color: #55AB55;
-    border-top: solid #2e5d2e;
-}
-.requests-list li input[type='submit'].request-reject {
-    background-color: #E94E1B;
-    border-top: solid #832c10;
-}
 
 a {
     width: 100%;
@@ -129,6 +107,11 @@ a {
 }
 
 @media only screen and (max-width: 360px) {
+  .email-warning {
+    margin: 10px auto;
+    font-size: 25px;
+    padding: 10px;
+  }
     h1 {
         font-size: 36px;
     }
@@ -181,25 +164,14 @@ a {
         font-size: 24px;
         padding: 5px;
     }
-    .requests-list li.can-handle .request-item {
-        box-shadow: inset 0 0 2px  1px yellow;
-    }
-    .requests-list li input[type='submit'] {
-        box-sizing: padding-box;
-        height: 40px;
-        box-shadow: 0 1px 1px black;
-    }
-    .requests-list li input[type='submit'].request-ok {
-        border-top-width: 3px;
-        border-radius: 0 0 0 10px;
-    }
-    .requests-list li input[type='submit'].request-reject {
-        border-top-width: 3px;
-        border-radius: 0 0 10px 0;
-    }
 }
 
 @media only screen and (min-width: 361px) and (max-width: 540px) {
+  .email-warning {
+    margin: 15px auto;
+    font-size: 30px;
+    padding: 15px;
+  }
     h1 {
         font-size: 40px;
     }
@@ -255,24 +227,14 @@ a {
         font-size: 30px;
         padding: 7px;
     }
-    .requests-list li.can-handle .request-item {
-        box-shadow: inset 0 0 3px  2px yellow;
-    }
-    .requests-list li input[type='submit'] {
-        height: 60px;
-        box-shadow: 0 2px 2px black;
-    }
-    .requests-list li input[type='submit'].request-ok {
-        border-top-width: 5px;
-        border-radius: 0 0 0 15px;
-    }
-    .requests-list li input[type='submit'].request-reject {
-        border-top-width: 5px;
-        border-radius: 0 0 15px 0;
-    }
 }
 
 @media only screen and (min-width: 541px) and (max-width: 750px) {
+  .email-warning {
+    margin: 20px auto;
+    font-size: 36px;
+    padding: 20px;
+  }
     h1 {
         font-size: 45px;
     }
@@ -328,23 +290,13 @@ a {
         font-size: 40px;
         padding: 10px;
     }
-    .requests-list li.can-handle .request-item {
-        box-shadow: inset 0 0 5px  3px yellow;
-    }
-    .requests-list li input[type='submit'] {
-        height: 80px;
-        box-shadow: 0 3px 3px black;
-    }
-    .requests-list li input[type='submit'].request-ok {
-        border-top-width: 7px;
-        border-radius: 0 0 0 20px;
-    }
-    .requests-list li input[type='submit'].request-reject {
-        border-top-width: 7px;
-        border-radius: 0 0 20px 0;
-    }
 }
 @media only screen and (min-width: 751px) {
+  .email-warning {
+    margin: 25px auto;
+    font-size: 42px;
+    padding: 25px;
+  }
     h1 {
         font-size: 60px;
     }
@@ -399,20 +351,5 @@ a {
         border-width: 5px;
         font-size: 60px;
         padding: 15px;
-    }
-    .requests-list li.can-handle .request-item {
-        box-shadow: inset 0 0 7px  4px yellow;
-    }
-    .requests-list li input[type='submit'] {
-        height: 110px;
-        box-shadow: 0 4px 4px black;
-    }
-    .requests-list li input[type='submit'].request-ok {
-        border-top-width: 10px;
-        border-radius: 0 0 0 30px;
-    }
-    .requests-list li input[type='submit'].request-reject {
-        border-top-width: 10px;
-        border-radius: 0 0 30px 0;
     }
 }

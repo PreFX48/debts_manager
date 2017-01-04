@@ -8,6 +8,7 @@ const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 const validator = require('validator');
 const cookieParser = require('cookie-parser');
+const emailer = require("emailjs");
 
 const PORT = process.env.PORT || 80;
 
@@ -34,7 +35,7 @@ function respondLoginPage(req, res, next) {
 }
 function postLogin(req, res, next) {
     let logins = JSON.parse(fs.readFileSync(__dirname + '/logins.json'));
-    if (logins[req.body.login] === req.body.password) {
+    if (logins[req.body.login].password === req.body.password) {
         req.session.authorized = true;
         req.session.user = req.body.login;
         res.redirect('/');
@@ -51,10 +52,18 @@ function respondSettingsPage(req, res, next) {
     res.status(200).render('settings');
 }
 
-function updateSettings(req, res, next) {
+function updatePassword(req, res, next) {
     if (req.session.user) {
         let logins = JSON.parse(fs.readFileSync(__dirname + '/logins.json'));
-        logins[req.session.user] = req.body.newPassword;
+        logins[req.session.user].password = req.body.newPassword;
+        fs.writeFileSync(__dirname + '/logins.json', JSON.stringify(logins));
+        res.redirect('/');
+    }
+}
+function updateEmail(req, res, next) {
+    if (req.session.user) {
+        let logins = JSON.parse(fs.readFileSync(__dirname + '/logins.json'));
+        logins[req.session.user].email = req.body.newEmail;
         fs.writeFileSync(__dirname + '/logins.json', JSON.stringify(logins));
         res.redirect('/');
     }
@@ -76,12 +85,10 @@ function respondMainPage(req, res, next) {
     let debts = JSON.parse(fs.readFileSync(__dirname + '/debts.json'));
     let users = JSON.parse(fs.readFileSync(__dirname + '/users.json'));
     let requests = JSON.parse(fs.readFileSync(__dirname + '/requests.json'));
-    for (var request of requests) {
-        if (request.to === req.session.user && !request.accepted) {
-            request.canHandle = true;
-        }
-    }
+    let logins = JSON.parse(fs.readFileSync(__dirname + '/logins.json'));
     res.status(200);
+
+    let warnAboutEmail = !logins[req.session.user].email;
 
     if (req.cookies.mobile && req.cookies.mobile === 'true') {
         debts = debts.map(user => {return { 'name': user.name,
@@ -90,11 +97,13 @@ function respondMainPage(req, res, next) {
                                   });
         debts.splice(req.app.locals.usersIds[req.session.user], 1);
         res.render('mobile', {
+            'warnAboutEmail': warnAboutEmail,
             'debts': debts,
             'requests': requests
         });
     } else {
         res.render('index', {
+            'warnAboutEmail': warnAboutEmail,
             'debts': debts,
             'requests': requests,
             'users': users
@@ -118,45 +127,35 @@ function postRequest(req, res, next) {
         newElement.id = requests[0].id + 1;
         requests.unshift(newElement);
     }
+    let logins = JSON.parse(fs.readFileSync(__dirname + '/logins.json'));
+    if (logins[newElement.to].email) {
+      let address = logins[newElement.to].email;
+      var message = {
+         from:    "PreFX48 <manager@prefx48.me>",
+         to:      newElement.to + " <" + address + ">",
+         subject: "Денежки",
+         attachment:
+         [
+            {data:"<html><p>Пользователь <strong>" + newElement.from + "</strong> указал, что вы должны ему дополнительно <strong>" + newElement.transfer + "</strong>р</p>\
+                   <p>Перейти на сайт: <a href='http://prefx48.me'>prefx48.me</a></p></html>", alternative:true},
+         ]
+      };
+      app.locals.emailServer.send(message, function(err, message) {
+        if (err) {console.log(err);
+        }
+      });
+    }
+    // TODO: log all sent emails
+
+    let ids = req.app.locals.usersIds;
+    let debts = JSON.parse(fs.readFileSync(__dirname + '/debts.json'));
+    debts[ids[newElement.from]].debts[ids[newElement.to]] -= parseInt(newElement.transfer);
+    debts[ids[newElement.to]].debts[ids[newElement.from]] += parseInt(newElement.transfer);
+    fs.writeFileSync(__dirname + '/debts.json',
+                     JSON.stringify(debts));
+
     fs.writeFileSync(__dirname + '/requests.json', JSON.stringify(requests));
     res.redirect('/');
-}
-
-function handleRequest(req, res, next) {
-    let requests = JSON.parse(fs.readFileSync(__dirname + '/requests.json'));
-    let ok, id;
-    if (req.body.request_ok !== undefined) {
-        ok = true;
-        id = parseInt(req.body.request_ok);
-    } else {
-        ok = false;
-        id = parseInt(req.body.request_reject);
-    }
-    for (var i = 0; i < requests.length; ++i) {
-        if (id === requests[i].id) {
-            if (requests[i].to === req.session.user) {
-                if (ok) {
-                    let ids = req.app.locals.usersIds;
-                    let debts = JSON.parse(fs.readFileSync(__dirname + '/debts.json'));
-                    debts[ids[requests[i].from]].debts[ids[requests[i].to]] -= parseInt(requests[i].transfer);
-                    debts[ids[requests[i].to]].debts[ids[requests[i].from]] += parseInt(requests[i].transfer);
-                    fs.writeFileSync(__dirname + '/debts.json',
-                                     JSON.stringify(debts));
-                    requests[i].accepted = true;
-                    delete requests[i].canHandle;
-                } else {
-                    requests.splice(i, 1);
-                }
-                fs.writeFileSync(__dirname + '/requests.json',
-                                 JSON.stringify(requests));
-                res.redirect('/');
-            } else {
-                res.status(403).send();
-            }
-            return;
-        }
-    }
-    res.status(403).send();
 }
 
 function logout(req, res, next) {
@@ -164,6 +163,13 @@ function logout(req, res, next) {
     res.redirect('/login');
 }
 
+
+app.locals.emailServer = emailer.server.connect({
+   user:    "manager@prefx48.me",
+   password:"l33tPassword",
+   host:    "mail.privateemail.com",
+   ssl:     true
+});
 
 app.engine('html', mustacheExpress());
 app.set('view engine', 'html');
@@ -189,8 +195,8 @@ app.get('/settings', respondSettingsPage);
 app.get('/logout', logout);
 app.post('/login', postLogin);
 app.post('/make_request', postRequest);
-app.post('/handle_request', handleRequest);
-app.post('/update_settings', updateSettings);
+app.post('/update_password', updatePassword);
+app.post('/update_email', updateEmail);
 
 (function() {
     let usersList = JSON.parse(fs.readFileSync(__dirname + '/users.json'));

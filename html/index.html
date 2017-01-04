@@ -7,6 +7,7 @@
     <a href='/?mobile=true'>Мобильная версия</a>
     <a href='/settings'>Настройки</a>
     <a href='/logout'>Выйти</a>
+    {{#warnAboutEmail}}<span class='email-warning'>Для получения уведомлений укажите email в настройках</span>{{/warnAboutEmail}}
   </div>
   <div class='main'>
     <link rel='stylesheet' href='index.css'>
@@ -31,30 +32,23 @@
       </div>
       <div class="request-form">
         <form action="/make_request" method="POST">
-          <label for="toInput">Кому:</label>
+          <label for="toInput">У кого:</label>
           <input type="text" id="toInput" name="to">
           <label for="number">Сколько:</label>
           <input type="text" id="moneyInput" name="money" min="1" max="9999">
-          <input type="submit" value="Предложить">
+          <input type="submit" value="Потребовать">
         </form>
       </div>
     </div>
     <div class="requests">
       <h1>Предложения:</h1>
-      <form action="/handle_request" method="POST">
-        <ul class="requests-list">
-          {{#requests}}
-          <li {{#canHandle}}class='can-handle'{{/canHandle}}
-              {{#accepted}} class='accepted'{{/accepted}}>
-            {{#canHandle}}
-            <input type='submit' class="request-ok" name="request_ok" value="{{id}}">
-            <input type='submit' class="request-reject" name="request_reject" value="{{id}}">
-            {{/canHandle}}
-            От {{from}} к {{to}}: {{transfer}}
-          </li>
-          {{/requests}}
-        </ul>
-      </form>
+      <ul class="requests-list">
+        {{#requests}}
+        <li>
+          От {{from}} к {{to}}: {{transfer}}
+        </li>
+        {{/requests}}
+      </ul>
     </div>
   </div>
 </body>

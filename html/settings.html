@@ -5,10 +5,18 @@
     <link rel='stylesheet' href="settings.css">
   </head>
   <body>
-    <form class="form-settings" method="post" action="/update_settings">
+  <div class="settings">
+    <form class="form-settings" method="post" action="/update_password">
       <label for="newPassword">Новый пароль</label>
-      <input type="password" id="newPasswordField" name="newPassword" />
+      <input type="password" id="newPasswordField" name="newPassword" placeholder="qwerty1234"/>
       <input type="submit" value="Обновить" />
     </form>
+    <form class="form-settings" method="post" action="/update_email">
+      <label for="email">Новый email</label>
+      <input type="email" id="newEmailField" name="newEmail" placeholder="name@domain.com"/>
+      <input type="submit" value="Обновить" />
+    </form>
+    <a id="backButton" href='/'>Назад</a>
+  </div>
   </body>
 </html>

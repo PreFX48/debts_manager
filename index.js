@@ -15,19 +15,6 @@ const emailer = require("emailjs");
 const HTTP_PORT = 80;
 const HTTPS_PORT = 443;
 
-function zip(...collections) {
-    let result = [];
-    let min_length = Math.min(...(collections.map((collection) => {return collection.length;})));
-    for (let i = 0; i < min_length; ++i) {
-        let element = [];
-        for (let j = 0; j < collections.length; ++j) {
-            element.push(collections[j][i]);
-        }
-        result.push(element);
-    }
-    return result;
-}
-
 function respondLoginPage(req, res, next) {
     if (req.session && req.session.authorized) {
         res.redirect('/');

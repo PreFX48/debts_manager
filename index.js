@@ -2,6 +2,8 @@
 
 const express = require('express');
 const app = express();
+const https = require('https');
+const http = require('http');
 const mustacheExpress = require('mustache-express');
 const fs = require('fs');
 const cookieSession = require('cookie-session');
@@ -10,7 +12,8 @@ const validator = require('validator');
 const cookieParser = require('cookie-parser');
 const emailer = require("emailjs");
 
-const PORT = process.env.PORT || 80;
+const HTTP_PORT = 80;
+const HTTPS_PORT = 443;
 
 function zip(...collections) {
     let result = [];
@@ -164,6 +167,15 @@ function logout(req, res, next) {
 }
 
 
+function ensureSecure(req, res, next){
+  if(req.secure){
+    return next();
+  };
+  res.redirect('https://' + req.hostname + req.url);
+};
+
+app.all('*', ensureSecure);
+
 app.locals.emailServer = emailer.server.connect({
    user:    "manager@prefx48.me",
    password:"l33tPassword",
@@ -206,6 +218,11 @@ app.post('/update_email', updateEmail);
     }
 })();
 
-app.listen(PORT, function () {
-    console.log(`App is listening on ${PORT}`);
-});
+var config = {
+    key: fs.readFileSync('/etc/letsencrypt/live/prefx48.me/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/prefx48.me/cert.pem'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/prefx48.me/chain.pem')
+};
+
+http.createServer(app).listen(HTTP_PORT)
+https.createServer(config, app).listen(HTTPS_PORT)

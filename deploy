@@ -7,4 +7,4 @@ scp -r public root@prefx48.me:/home/prefx/proj/
 scp -r html root@prefx48.me:/home/prefx/proj/
 
 ssh root@prefx48.me "cd /home/prefx/proj; npm install"
-ssh root@prefx48.me "pm2 start /home/prefx/proj/js/index.js --name nodejs"
+ssh root@prefx48.me "pm2 start /home/prefx/proj/js/server.js --name nodejs"

@@ -2,7 +2,7 @@
   "name": "debts_manager",
   "version": "0.1.0",
   "description": "A simple site for managing debts of a group of people",
-  "main": "index.js",
+  "main": "js/server.js",
   "dependencies": {
     "basic-auth": "^1.0.4",
     "body-parser": "^1.15.2",
